@@ -1,4 +1,4 @@
-package com.example.yzvar_telegrambot.componets;
+package com.example.yzvar_telegrambot.componets.initializers;
 
 
 import com.example.yzvar_telegrambot.entities.product.CategoryProduct;

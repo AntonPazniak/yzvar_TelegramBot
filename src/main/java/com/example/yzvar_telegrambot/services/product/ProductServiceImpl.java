@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryCacheService categoryCacheService;
+    private final CategoryProductCache categoryCacheService;
 
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product product = Product.builder()

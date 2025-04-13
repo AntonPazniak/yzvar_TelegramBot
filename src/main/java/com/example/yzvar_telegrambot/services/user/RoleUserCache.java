@@ -14,13 +14,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @DependsOn("userRoleInitializer")
-public class RoleCacheService {
+public class RoleUserCache {
 
     private final UserRoleRepository repository;
     private final Map<UserRoleEnum, UserRole> roleCache = new EnumMap<>(UserRoleEnum.class);
 
     @PostConstruct
-    public void initCache() {
+    private void initCache() {
         for (UserRoleEnum roleEnum : UserRoleEnum.values()) {
             UserRole role = repository.findByName(roleEnum)
                     .orElseThrow(() -> new IllegalStateException("Role not found: " + roleEnum));

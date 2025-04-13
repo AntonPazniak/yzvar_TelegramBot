@@ -1,5 +1,6 @@
-package com.example.yzvar_telegrambot.componets;
+package com.example.yzvar_telegrambot.componets.initializers.bot;
 
+import com.example.yzvar_telegrambot.componets.ClientBotComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;

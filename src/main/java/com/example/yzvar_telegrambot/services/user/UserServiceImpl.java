@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleCacheService roleCacheService;
+    private final RoleUserCache roleCacheService;
 
     @Override
     public UserDTO createUserIfNotExist(Chat chat) {

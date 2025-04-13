@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @DependsOn("categoryProductInitializer")
-public class CategoryCacheService {
+public class CategoryProductCache {
     private final CategoryProductRepository repository;
     private final Map<CategoryEnum, CategoryProduct> categoryCache = new EnumMap<>(CategoryEnum.class);
 
