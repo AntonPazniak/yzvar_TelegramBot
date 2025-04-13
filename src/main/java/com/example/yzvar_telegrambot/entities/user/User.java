@@ -1,12 +1,10 @@
-package com.example.yzvar_telegrambot.entities;
+package com.example.yzvar_telegrambot.entities.user;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -25,7 +23,7 @@ public class User {
     private String phone;
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime created;
+    private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)

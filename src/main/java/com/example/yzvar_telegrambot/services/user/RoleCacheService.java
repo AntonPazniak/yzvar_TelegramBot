@@ -1,6 +1,6 @@
-package com.example.yzvar_telegrambot.services;
+package com.example.yzvar_telegrambot.services.user;
 
-import com.example.yzvar_telegrambot.entities.UserRole;
+import com.example.yzvar_telegrambot.entities.user.UserRole;
 import com.example.yzvar_telegrambot.enums.UserRoleEnum;
 import com.example.yzvar_telegrambot.repositories.UserRoleRepository;
 import jakarta.annotation.PostConstruct;

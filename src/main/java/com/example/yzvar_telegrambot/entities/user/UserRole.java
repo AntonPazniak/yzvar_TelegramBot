@@ -1,4 +1,4 @@
-package com.example.yzvar_telegrambot.entities;
+package com.example.yzvar_telegrambot.entities.user;
 
 import com.example.yzvar_telegrambot.enums.UserRoleEnum;
 import jakarta.persistence.*;

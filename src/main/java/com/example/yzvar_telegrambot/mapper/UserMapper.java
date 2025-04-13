@@ -1,7 +1,7 @@
 package com.example.yzvar_telegrambot.mapper;
 
 import com.example.yzvar_telegrambot.dto.user.UserDTO;
-import com.example.yzvar_telegrambot.entities.User;
+import com.example.yzvar_telegrambot.entities.user.User;
 
 public class UserMapper {
 

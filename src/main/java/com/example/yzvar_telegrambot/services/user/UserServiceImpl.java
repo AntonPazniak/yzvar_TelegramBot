@@ -2,11 +2,10 @@ package com.example.yzvar_telegrambot.services.user;
 
 
 import com.example.yzvar_telegrambot.dto.user.UserDTO;
-import com.example.yzvar_telegrambot.entities.User;
+import com.example.yzvar_telegrambot.entities.user.User;
 import com.example.yzvar_telegrambot.enums.UserRoleEnum;
 import com.example.yzvar_telegrambot.mapper.UserMapper;
 import com.example.yzvar_telegrambot.repositories.UserRepository;
-import com.example.yzvar_telegrambot.services.RoleCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Chat;
