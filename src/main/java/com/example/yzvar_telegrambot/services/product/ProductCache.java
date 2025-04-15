@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -27,8 +28,13 @@ public class ProductCache {
     }
 
     public Product getById(Long id) {
-        return productCache.get(id);
+        Product product = productCache.get(id);
+        if (product == null) {
+            throw new NoSuchElementException("Product with id " + id + " not found in cache");
+        }
+        return product;
     }
+
 
     public Collection<Product> getAll() {
         return productCache.values();

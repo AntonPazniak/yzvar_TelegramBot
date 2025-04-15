@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,5 +23,9 @@ public class StatusOrder {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private StatusOrderEnum name;
+
+    @OneToMany(mappedBy = "statusOrder", fetch = FetchType.LAZY)
+    private List<Order> orders;
+
 
 }

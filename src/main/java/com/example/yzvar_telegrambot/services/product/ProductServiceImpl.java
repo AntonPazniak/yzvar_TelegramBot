@@ -5,6 +5,7 @@ import com.example.yzvar_telegrambot.entities.product.Product;
 import com.example.yzvar_telegrambot.mapper.ProductMapper;
 import com.example.yzvar_telegrambot.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO updateProduct(ProductDTO productDTO) {
-        Product product = getProductOrThrow(productDTO.getId());
+        Product product = getProductById(productDTO.getId());
         product.setTitle(productDTO.getTitle());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void updateAvailability(Long productId,Boolean status) {
-        var product = getProductOrThrow(productId);
+        var product = getProductById(productId);
         product.setActive(status);
         productRepository.save(product);
     }
@@ -52,7 +53,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll().stream().map(ProductMapper::toDto).collect(Collectors.toList());
     }
 
-    private Product getProductOrThrow(Long id) {
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow();
+    }
+
+
+    @Cacheable(value = "products", key = "#id")
+    public Product getProductByIdOrThrow(Long id) {
         return productRepository.findById(id)
                 .orElseThrow();
     }

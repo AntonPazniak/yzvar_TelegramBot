@@ -7,8 +7,11 @@ import com.example.yzvar_telegrambot.enums.UserRoleEnum;
 import com.example.yzvar_telegrambot.mapper.UserMapper;
 import com.example.yzvar_telegrambot.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,25 +22,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUserIfNotExist(Chat chat) {
-        User user = userRepository.findById(chat.getId())
-                .orElseGet(() -> {
-                    String userName = chat.getUserName() != null ? chat.getUserName() : "Unknown";
-                    String firstName = chat.getFirstName() != null ? chat.getFirstName() : "Unknown";
-                    String lastName = chat.getLastName() != null ? chat.getLastName() : "Unknown";
+        var user = userRepository.findById(chat.getId());
+        if (user.isEmpty()) {
+            String userName = chat.getUserName() != null ? chat.getUserName() : "Unknown";
+            String firstName = chat.getFirstName() != null ? chat.getFirstName() : "Unknown";
+            String lastName = chat.getLastName() != null ? chat.getLastName() : "Unknown";
 
-                    User newUser = User.builder()
-                            .id(chat.getId())
-                            .username(userName)
-                            .firstName(firstName)
-                            .lastName(lastName)
-                            .phone("Unknown")
-                            .role(roleCacheService.get(UserRoleEnum.USER))
-                            .build();
+            User newUser = User.builder()
+                    .id(chat.getId())
+                    .username(userName)
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .phone("Unknown")
+                    .role(roleCacheService.get(UserRoleEnum.USER))
+                    .build();
 
-                    return userRepository.save(newUser);
-                });
+            user = Optional.of(userRepository.save(newUser));
+        }
 
-        return UserMapper.toDto(user);
+        return UserMapper.toDto(user.get());
+    }
+
+
+    @Cacheable(value = "users", key = "#id")
+    public User getUserByIdOrElseThrow(Long id) {
+        return userRepository.findById(id).orElseThrow();
     }
 
 }

@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +24,8 @@ public class CategoryProduct {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private CategoryEnum name;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> products;
 
 }

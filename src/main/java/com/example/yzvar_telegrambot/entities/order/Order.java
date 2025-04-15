@@ -24,14 +24,20 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     @NotNull
     private Integer quantity;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusOrder statusOrder;
 
     @CreatedDate
     @Column(updatable = false)
