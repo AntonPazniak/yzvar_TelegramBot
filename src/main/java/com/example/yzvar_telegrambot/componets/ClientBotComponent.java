@@ -1,12 +1,16 @@
 package com.example.yzvar_telegrambot.componets;
 
-import com.example.yzvar_telegrambot.services.command_handler.CommandHandlerService;
 import com.example.yzvar_telegrambot.configurations.ClientBotConfig;
+import com.example.yzvar_telegrambot.services.facades.CommandHandlerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -14,11 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 @Slf4j
@@ -34,7 +33,7 @@ public class ClientBotComponent extends TelegramLongPollingBot {
     public ClientBotComponent(ClientBotConfig config, CommandHandlerService commandHandlerService) {
         this.config = config;
         try {
-            this.execute(new SetMyCommands(config.listofCommands, new BotCommandScopeDefault(), null));
+            this.execute(new SetMyCommands(config.defaultCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: {}", e.getMessage());
         }
@@ -61,7 +60,7 @@ public class ClientBotComponent extends TelegramLongPollingBot {
     }
 
     // send a message and delete old messages
-    public void sendMessage(ArrayList<SendMessage> messages) {
+    public void sendMessage(List<SendMessage> messages) {
         if (messages.isEmpty()) {
             return;
         }

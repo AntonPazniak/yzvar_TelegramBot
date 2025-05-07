@@ -4,6 +4,7 @@ import com.example.yzvar_telegrambot.dto.order.CreateOrderDTO;
 import com.example.yzvar_telegrambot.dto.order.OrderDTO;
 import com.example.yzvar_telegrambot.entities.order.Order;
 import com.example.yzvar_telegrambot.enums.StatusOrderEnum;
+import com.example.yzvar_telegrambot.mapper.OrderMapper;
 import com.example.yzvar_telegrambot.repositories.OrderRepository;
 import com.example.yzvar_telegrambot.services.product.ProductCache;
 import com.example.yzvar_telegrambot.services.user.UserServiceImpl;
@@ -27,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
                 .quantity(createOrderDTO.getQuantity())
                 .build();
         orderRepository.save(order);
-        return OrderDTO.builder().build();
+        return OrderMapper.toDTO(order);
     }
 
     public OrderDTO updateStatusOrder(Long orderId, StatusOrderEnum statusOrderEnum) {

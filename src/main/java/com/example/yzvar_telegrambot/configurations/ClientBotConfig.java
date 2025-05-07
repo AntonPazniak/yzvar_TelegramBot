@@ -1,9 +1,5 @@
 package com.example.yzvar_telegrambot.configurations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Data
@@ -26,6 +26,8 @@ public class ClientBotConfig {
     public static final String START_COMMAND = "/start";
     public static final String START_COMMAND_DESCRIPTION = "Starts the bot";
     public static final String START_MESSAGE = "Welcome to the Klo Frutti";
+    public static final String START_MESSAGE_USER_EXIST = "You are already on the server";
+
 
     public static final String STOP_COMMAND = "/stop";
     public static final String STOP_COMMAND_DESCRIPTION = "Stops the bot";
@@ -59,7 +61,6 @@ public class ClientBotConfig {
     public static final String ORDER_CANCEL_COMMAND = "/cancel_order";
     public static final String ORDER_CANCEL_COMMAND_DESCRIPTION = "Cancels the order";
     public static final String ORDER_CANCEL_MESSAGE = "Order cancelled";
-    public static final String ORDER_CANCEL_BUTTON_MESSAGE = "Cancel ❌";
 
     public static final String ORDER_MY_PROCESSING_COMMAND = "/order_my_processing";
     public static final String ORDER_MY_PROCESSING_COMMAND_DESCRIPTION = "Get my orders processing";
@@ -73,6 +74,34 @@ public class ClientBotConfig {
     public static final String ORDER_MY_COMPLETED_COMMAND_DESCRIPTION = "Get my orders completed";
     public static final String ORDER_MY_COMPLETED_BUTTON_MESSAGE = "Completed";
 
+    public static final String ORDER_BUTTON_TEXT = "Order \uD83D\uDCE6";
+    public static final String CANCEL_BUTTON_TEXT = "Cancel ❌";
+
+
+    // new product massage
+    public static final String NEW_PRODUCT_TITLE_TEXT = "New Product \nEnter the title";
+    public static final String NEW_PRODUCT_DESCRIPTION_TEXT = "New Product \nEnter the description";
+    public static final String NEW_PRODUCT_CATEGORY_TEXT = "New Product \nSelect the category";
+
+
+    public static final String NEW_ORDER_CANCEL_COMMAND = "/new_order_cancel";
+
+    public static final String NEW_PRODUCT_COMMAND = "/new_product";
+    public static final String NEW_PRODUCT_CANCEL_COMMAND = "/new_product_cancel";
+
+    public static final String NEW_PRODUCT_CATEGORY_MEAT_COMMAND = "/new_product_category_meat";
+    public static final String NEW_PRODUCT_CATEGORY_MEAT_TEXT_BUTTON = "Meat";
+
+    public static final String NEW_PRODUCT_CATEGORY_VEGETARIAN_COMMAND = "/new_product_category_vegetarian";
+    public static final String NEW_PRODUCT_CATEGORY_VEGETARIAN_TEXT_BUTTON = "Vegetarian";
+
+    public static final String NEW_PRODUCT_PRICE_TEXT = "New Product \nEnter the price";
+    public static final String NEW_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter price as a number, such as 12.99.";
+
+    public static final String NEW_PRODUCT_CANCEL_TEXT = "You cancel the crete a new product";
+    public static final String NEW_PRODUCT_WEIGHT_TEXT = "New Product \nEnter the weight of the product";
+    public static final String NEW_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter weight as a number, such as 100.";
+    public static final String NEW_PRODUCT_SUCCESS_TEXT = "New product successfully created";
 
 
 
@@ -100,7 +129,7 @@ public class ClientBotConfig {
         keyboard.add(row);
     }
 
-    public final List<BotCommand> listofCommands = Arrays.asList(
+    public final List<BotCommand> defaultCommands = Arrays.asList(
             new BotCommand(START_COMMAND, START_COMMAND_DESCRIPTION),
             new BotCommand(HELP_COMMAND, HELP_COMMAND_DESCRIPTION),
             new BotCommand(SHOW_PRODUCTS_COMMAND, SHOW_PRODUCTS_COMMAND_DESCRIPTION),

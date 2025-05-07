@@ -12,6 +12,7 @@ public class ProductMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .weight(product.getWeight())
+                .category(product.getCategory().getName())
                 .build();
     }
 

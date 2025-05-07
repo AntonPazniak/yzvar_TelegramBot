@@ -17,6 +17,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryProductCache categoryCacheService;
+    private final ProductCache productCache;
 
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product product = Product.builder()
@@ -24,9 +25,11 @@ public class ProductServiceImpl implements ProductService {
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())
                 .weight(productDTO.getWeight())
+                .category(categoryCacheService.get(productDTO.getCategory()))
+                .active(true)
                 .build();
         productRepository.save(product);
-        productDTO.setId(product.getId());
+        productCache.addOrUpdate(product);
         return productDTO;
     }
 
@@ -36,13 +39,16 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setWeight(productDTO.getWeight());
-        return ProductMapper.toDto(productRepository.save(product));
+        productRepository.save(product);
+        productCache.addOrUpdate(product);
+        return ProductMapper.toDto(product);
     }
 
     public void updateAvailability(Long productId,Boolean status) {
         var product = getProductById(productId);
         product.setActive(status);
         productRepository.save(product);
+        productCache.addOrUpdate(product);
     }
 
     public List<ProductDTO> getAllActiveProducts() {

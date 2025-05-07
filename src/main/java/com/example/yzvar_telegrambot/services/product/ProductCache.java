@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +39,10 @@ public class ProductCache {
 
     public Collection<Product> getAll() {
         return productCache.values();
+    }
+
+    public Collection<Product> getAllActiveProducts() {
+        return productCache.values().stream().filter(Product::getActive).collect(Collectors.toList());
     }
 
     public void refresh() {

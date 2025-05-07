@@ -8,5 +8,5 @@ import lombok.Data;
 public class CreateOrderDTO {
     private Long userId;
     private Long productId;
-    private Integer quantity;
+    private Integer quantity = 1;
 }

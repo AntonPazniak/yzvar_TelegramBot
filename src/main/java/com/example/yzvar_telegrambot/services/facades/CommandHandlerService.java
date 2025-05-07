@@ -1,11 +1,11 @@
-package com.example.yzvar_telegrambot.services.command_handler;
+package com.example.yzvar_telegrambot.services.facades;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface CommandHandlerService {
 
-    ArrayList<SendMessage> onUpdateReceived(Update update);
+    List<SendMessage> onUpdateReceived(Update update);
 }
