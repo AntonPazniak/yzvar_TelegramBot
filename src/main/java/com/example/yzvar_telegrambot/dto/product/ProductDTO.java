@@ -12,5 +12,6 @@ public class ProductDTO {
         private String description;
         private Float price;
         private CategoryEnum category;
+        private Boolean status;
         private Integer weight;
 }

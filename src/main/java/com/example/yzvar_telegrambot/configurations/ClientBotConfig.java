@@ -1,16 +1,21 @@
 package com.example.yzvar_telegrambot.configurations;
 
+import com.example.yzvar_telegrambot.enums.ProductEditStepEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @Data
@@ -103,6 +108,81 @@ public class ClientBotConfig {
     public static final String NEW_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter weight as a number, such as 100.";
     public static final String NEW_PRODUCT_SUCCESS_TEXT = "New product successfully created";
 
+    public static final String GET_ALL_PRODUCTS_ADMIN_COMMAND = "/get_all_admin_products";
+    public static final String EDIT_PRODUCT_TEXT_BUTTON = "Edit";
+    public static final String EDIT_PRODUCT_COMMAND = "/edit_product";
+
+    public static final String EDIT_PRODUCT_TITLE_COMMAND = "/edit_product_title";
+    public static final String EDIT_PRODUCT_DESCRIPTION_COMMAND = "/edit_product_description";
+    public static final String EDIT_PRODUCT_STATUS_COMMAND = "/edit_product_status";
+    public static final String EDIT_PRODUCT_PRICE_COMMAND = "/edit_product_price";
+    public static final String EDIT_PRODUCT_WEIGHT_COMMAND = "/edit_product_weight";
+    public static final String EDIT_PRODUCT_CATEGORY_COMMAND = "/edit_product_category";
+
+    public static final String EDIT_PRODUCT_TITLE_TEXT_BUTTON = "Edit title.";
+    public static final String EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON = "Edit description.";
+    public static final String EDIT_PRODUCT_STATUS_TEXT_BUTTON = "Edit status.";
+    public static final String EDIT_PRODUCT_PRICE_TEXT_BUTTON = "Edit price.";
+    public static final String EDIT_PRODUCT_WEIGHT_TEXT_BUTTON = "Edit weight.";
+    public static final String EDIT_PRODUCT_CATEGORY_TEXT_BUTTON = "Edit category.";
+
+    public static final String EDIT_PRODUCT_TITLE_TEXT = "Edit product title \nEnter the new title.";
+    public static final String EDIT_PRODUCT_DESCRIPTION_TEXT = "Edit product description \nEnter the new description.";
+    public static final String EDIT_PRODUCT_STATUS_TEXT = "Edit product status \nSelect the new product status.";
+    public static final String EDIT_PRODUCT_PRICE_TEXT = "Edit product price \nEnter the new price.";
+    public static final String EDIT_PRODUCT_WEIGHT_TEXT = "Edit product weight \nEnter the new weight.";
+    public static final String EDIT_PRODUCT_CATEGORY_TEXT = "Edit product category \nSelect the new product category.";
+
+    public static final String EDIT_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter a valid price.";
+    public static final String EDIT_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter a valid weight.";
+
+    public static final String EDIT_PRODUCT_CATEGORY_COLL_BACK_DATA = "/edit_product_category_new";
+    public static final String EDIT_PRODUCT_STATUS_COLL_BACK_DATA = "/edit_product_status_new";
+
+    public static final String EDIT_PRODUCT_STATUS_VISIBLE_TEXT_BUTTON = "Visible";
+    public static final String EDIT_PRODUCT_STATUS_INVISIBLE_TEXT_BUTTON = "Invisible";
+
+    public static final List<List<String>> callbackList = List.of(
+            List.of(EDIT_PRODUCT_TITLE_COMMAND, EDIT_PRODUCT_TITLE_TEXT_BUTTON),
+            List.of(EDIT_PRODUCT_DESCRIPTION_COMMAND, EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON),
+            List.of(EDIT_PRODUCT_STATUS_COMMAND, EDIT_PRODUCT_STATUS_TEXT_BUTTON),
+            List.of(EDIT_PRODUCT_PRICE_COMMAND, EDIT_PRODUCT_PRICE_TEXT_BUTTON),
+            List.of(EDIT_PRODUCT_WEIGHT_COMMAND, EDIT_PRODUCT_WEIGHT_TEXT_BUTTON),
+            List.of(EDIT_PRODUCT_CATEGORY_COMMAND, EDIT_PRODUCT_CATEGORY_TEXT_BUTTON)
+    );
+
+    public static final Map<ProductEditStepEnum, String> editProductMessagesByStepMap = Map.ofEntries(
+            Map.entry(ProductEditStepEnum.title, EDIT_PRODUCT_TITLE_COMMAND),
+            Map.entry(ProductEditStepEnum.description, EDIT_PRODUCT_DESCRIPTION_TEXT),
+            Map.entry(ProductEditStepEnum.status, EDIT_PRODUCT_STATUS_COMMAND),
+            Map.entry(ProductEditStepEnum.price, EDIT_PRODUCT_PRICE_COMMAND),
+            Map.entry(ProductEditStepEnum.weight, EDIT_PRODUCT_WEIGHT_COMMAND),
+            Map.entry(ProductEditStepEnum.category, EDIT_PRODUCT_CATEGORY_TEXT)
+    );
+
+    @Data
+    @AllArgsConstructor
+    public static class EditStepMessage {
+        private ProductEditStepEnum productEditStep;
+        private String message;
+        private String collBackData;
+
+        public EditStepMessage(ProductEditStepEnum productEditStep, String message) {
+            this.productEditStep = productEditStep;
+            this.message = message;
+        }
+    }
+
+
+    public static final Map<String, EditStepMessage> editStepMessageMap = Map.ofEntries(
+            Map.entry(EDIT_PRODUCT_TITLE_COMMAND, new EditStepMessage(ProductEditStepEnum.title, EDIT_PRODUCT_TITLE_TEXT)),
+            Map.entry(EDIT_PRODUCT_DESCRIPTION_COMMAND, new EditStepMessage(ProductEditStepEnum.description, EDIT_PRODUCT_DESCRIPTION_TEXT)),
+            Map.entry(EDIT_PRODUCT_STATUS_COMMAND, new EditStepMessage(ProductEditStepEnum.status, EDIT_PRODUCT_STATUS_TEXT, EDIT_PRODUCT_STATUS_COLL_BACK_DATA)),
+            Map.entry(EDIT_PRODUCT_PRICE_COMMAND, new EditStepMessage(ProductEditStepEnum.price, EDIT_PRODUCT_PRICE_TEXT)),
+            Map.entry(EDIT_PRODUCT_WEIGHT_COMMAND, new EditStepMessage(ProductEditStepEnum.weight, EDIT_PRODUCT_WEIGHT_TEXT)),
+            Map.entry(EDIT_PRODUCT_CATEGORY_COMMAND, new EditStepMessage(ProductEditStepEnum.category, EDIT_PRODUCT_CATEGORY_TEXT, EDIT_PRODUCT_CATEGORY_COLL_BACK_DATA))
+    );
+
 
 
     public static final KeyboardRow row0 = new KeyboardRow();
@@ -136,5 +216,18 @@ public class ClientBotConfig {
             new BotCommand(MY_ORDERS_COMMAND, MY_ORDERS_COMMAND_DESCRIPTION),
             new BotCommand(SEND_MESSAGE_COMMAND, SEND_MESSAGE_COMMAND_DESCRIPTION)
     );
+
+    public static InlineKeyboardMarkup getInlineKeyboardMarkupWithCancelButton() {
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        markupInLine.setKeyboard(List.of(List.of(getCancelButton())));
+        return markupInLine;
+    }
+
+
+    public static InlineKeyboardButton getCancelButton() {
+        var canselButton = new InlineKeyboardButton(CANCEL_BUTTON_TEXT);
+        canselButton.setCallbackData(NEW_PRODUCT_CANCEL_COMMAND);
+        return canselButton;
+    }
 
 }

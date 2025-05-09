@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +29,19 @@ public class CategoryProductCache {
     public CategoryProduct get(CategoryEnum categoryEnum) {
         return categoryCache.get(categoryEnum);
     }
+
+    public List<CategoryProduct> getAll() {
+        return new ArrayList<>(categoryCache.values());
+    }
+
+    public CategoryEnum getCategoryEnumById(Long id) {
+        return categoryCache.entrySet().stream()
+                .filter(entry -> entry.getValue().getId().equals(id))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("CategoryEnum not found for id: " + id));
+    }
+
+
 
 }

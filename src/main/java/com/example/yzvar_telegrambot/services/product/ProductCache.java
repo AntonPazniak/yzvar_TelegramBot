@@ -36,6 +36,9 @@ public class ProductCache {
         return product;
     }
 
+    public Boolean isExist(Long id) {
+        return productCache.containsKey(id);
+    }
 
     public Collection<Product> getAll() {
         return productCache.values();

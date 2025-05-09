@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class SendMessageProductDTO {
+public class SendMessageNewProductDTO {
     private Boolean status;
     private List<SendMessage> messages;
 }

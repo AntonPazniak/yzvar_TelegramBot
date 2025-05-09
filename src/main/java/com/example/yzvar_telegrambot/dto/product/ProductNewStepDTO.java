@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProductStepDTO {
+public class ProductNewStepDTO {
     private Long chatId;
     private ProductStepEnum productStep;
     private ProductDTO productDTO;
