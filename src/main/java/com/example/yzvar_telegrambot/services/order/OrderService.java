@@ -18,4 +18,6 @@ public interface OrderService {
     List<OrderDTO> getAllOrdersByStatus(OrderStatusEnum statusOrderEnum);
 
     List<OrderDTO> getAllOrdersByStatusAndUsername(OrderStatusEnum statusOrderEnum, String username);
+
+    List<OrderDTO> getAllOrdersByIdUserAndStatus(Long userId, OrderStatusEnum statusOrderEnum);
 }

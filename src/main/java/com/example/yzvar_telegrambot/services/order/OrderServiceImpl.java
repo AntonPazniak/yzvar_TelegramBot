@@ -65,5 +65,10 @@ public class OrderServiceImpl implements OrderService {
                 .stream().map(OrderMapper::toDTO).toList();
     }
 
+    public List<OrderDTO> getAllOrdersByIdUserAndStatus(Long userId, OrderStatusEnum statusOrderEnum) {
+        return orderRepository.findAllByUser_idAndStatusOrder_Name(userId, statusOrderEnum)
+                .stream().map(OrderMapper::toDTO).toList();
+    }
+
 
 }

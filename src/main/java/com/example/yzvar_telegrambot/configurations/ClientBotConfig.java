@@ -46,38 +46,14 @@ public class ClientBotConfig {
 
     public static final String NEW_ORDER_COMMAND_DESCRIPTION = "Order a product";
 
+    /**
+     * User Order commands
+     */
+
     public static final String MY_ORDERS_COMMAND = "/my_orders";
     public static final String MY_ORDERS_COMMAND_DESCRIPTION = "Shows my orders";
-
-    public static final String SEND_MESSAGE_COMMAND = "/send_message";
-    public static final String SEND_MESSAGE_COMMAND_DESCRIPTION = "Send a message to the administrator";
-
-
-    /**
-     * Order commands
-     */
-    public static final String NEW_ORDER_CANCEL_COMMAND = "/new_order_cancel";
-    public static final String ORDER_COMMAND = "/order";
-    public static final String ORDER_COMMAND_DESCRIPTION = "Shows menu order";
-    public static final String ORDER_BUTTON_MESSAGE = "Get my orders";
-    public static final String ORDER_MESSAGE = "Select an option:";
-
-    public static final String ORDER_CANCEL_COMMAND = "/cancel_order";
-    public static final String ORDER_CANCEL_COMMAND_DESCRIPTION = "Cancels the order";
-    public static final String ORDER_CANCEL_MESSAGE = "Order cancelled";
-
-    public static final String ORDER_MY_PROCESSING_COMMAND = "/order_my_processing";
-    public static final String ORDER_MY_PROCESSING_COMMAND_DESCRIPTION = "Get my orders processing";
-    public static final String ORDER_MY_PROCESSING_BUTTON_MESSAGE = "Processing";
-
-    public static final String ORDER_MY_CANCELED_COMMAND = "/order_my_cancel";
-    public static final String ORDER_MY_CANCELED_COMMAND_DESCRIPTION = "Get my orders canceled";
-    public static final String ORDER_MY_CANCELED_BUTTON_MESSAGE = "Canceled";
-
-    public static final String ORDER_MY_COMPLETED_COMMAND = "/order_my_completed";
-    public static final String ORDER_MY_COMPLETED_COMMAND_DESCRIPTION = "Get my orders completed";
-    public static final String ORDER_MY_COMPLETED_BUTTON_MESSAGE = "Completed";
-
+    public static final String MY_ORDERS_SHOW_CBD = "/my_orders";
+    public static final String MY_ORDERS_EDIT_CBD = "/order_edit";
     public static final String ORDER_BUTTON_TEXT = "Order \uD83D\uDCE6";
     public static final String CANCEL_BUTTON_TEXT = "Cancel ❌";
 
@@ -214,7 +190,6 @@ public class ClientBotConfig {
         keyboard.add(row);
         mainKeyboardMarkup.setKeyboard(keyboard);
         row = new KeyboardRow();
-        row.add(new KeyboardButton(SEND_MESSAGE_COMMAND));
         keyboard.add(row);
     }
 
@@ -222,8 +197,7 @@ public class ClientBotConfig {
             new BotCommand(START_COMMAND, START_COMMAND_DESCRIPTION),
             new BotCommand(HELP_COMMAND, HELP_COMMAND_DESCRIPTION),
             new BotCommand(SHOW_PRODUCTS_COMMAND, SHOW_PRODUCTS_COMMAND_DESCRIPTION),
-            new BotCommand(MY_ORDERS_COMMAND, MY_ORDERS_COMMAND_DESCRIPTION),
-            new BotCommand(SEND_MESSAGE_COMMAND, SEND_MESSAGE_COMMAND_DESCRIPTION)
+            new BotCommand(MY_ORDERS_COMMAND, MY_ORDERS_COMMAND_DESCRIPTION)
     );
 
     public static InlineKeyboardMarkup getInlineKeyboardMarkupWithCancelButton() {

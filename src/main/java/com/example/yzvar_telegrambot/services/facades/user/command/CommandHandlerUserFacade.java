@@ -28,6 +28,8 @@ public class CommandHandlerUserFacade {
             return registrationFacade.registrationNewUser(chat);
         } else if (command.equalsIgnoreCase(SHOW_PRODUCTS_COMMAND)) {
             return productFacade.getAllProducts(chatId);
+        } else if (command.equalsIgnoreCase(MY_ORDERS_COMMAND)) {
+            return orderFacade.getPanelOrder(chatId);
         }
         return List.of();
     }
@@ -36,6 +38,8 @@ public class CommandHandlerUserFacade {
         String command = commands[0];
         if (command.equalsIgnoreCase(NEW_ORDER_CBD) && commands.length == 2) {
             return orderFacade.newOrder(chatId, Long.parseLong(commands[1]));
+        } else if (command.equalsIgnoreCase(MY_ORDERS_SHOW_CBD) && commands.length == 2) {
+            return orderFacade.getOrdesUserByStatus(chatId, commands[1]);
         }
         return List.of();
     }
