@@ -37,9 +37,12 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", nullable = false)
     private StatusOrder statusOrder;
+
+    @NotNull
+    private Float price;
 
     @CreatedDate
     @Column(updatable = false)

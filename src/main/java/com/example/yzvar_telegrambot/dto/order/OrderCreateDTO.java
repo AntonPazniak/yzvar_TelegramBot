@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateOrderDTO {
+public class OrderCreateDTO {
     private Long userId;
     private Long productId;
-    private Integer quantity = 1;
+    private Integer quantity;
 }

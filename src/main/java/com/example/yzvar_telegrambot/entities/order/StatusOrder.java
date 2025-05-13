@@ -1,6 +1,6 @@
 package com.example.yzvar_telegrambot.entities.order;
 
-import com.example.yzvar_telegrambot.enums.StatusOrderEnum;
+import com.example.yzvar_telegrambot.enums.OrderStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class StatusOrder {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private StatusOrderEnum name;
+    private OrderStatusEnum name;
 
     @OneToMany(mappedBy = "statusOrder", fetch = FetchType.LAZY)
     private List<Order> orders;

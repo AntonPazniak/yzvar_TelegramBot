@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productDTO.getPrice())
                 .weight(productDTO.getWeight())
                 .category(categoryCacheService.get(productDTO.getCategory()))
-                .active(true)
+                .active(false)
                 .build();
         productRepository.save(product);
         productCache.addOrUpdate(product);

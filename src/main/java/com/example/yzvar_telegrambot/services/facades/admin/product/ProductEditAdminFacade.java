@@ -1,8 +1,8 @@
 package com.example.yzvar_telegrambot.services.facades.admin.product;
 
+import com.example.yzvar_telegrambot.dto.SendMessageDTO;
 import com.example.yzvar_telegrambot.dto.product.ProductDTO;
 import com.example.yzvar_telegrambot.dto.product.ProductEditStepDTO;
-import com.example.yzvar_telegrambot.dto.product.SendMessageEditProductDTO;
 import com.example.yzvar_telegrambot.entities.product.Product;
 import com.example.yzvar_telegrambot.enums.ProductEditStepEnum;
 import com.example.yzvar_telegrambot.mapper.ProductMapper;
@@ -62,7 +62,7 @@ public class ProductEditAdminFacade {
         return List.of();
     }
 
-    public SendMessageEditProductDTO startProductEditStep(Long chatId, String command, Long productId) {
+    public SendMessageDTO startProductEditStep(Long chatId, String command, Long productId) {
         if (userService.isUserAdminById(chatId)) {
             var messageConfig = editStepMessageMap.get(command);
             var step = messageConfig.getProductEditStep();
@@ -73,30 +73,33 @@ public class ProductEditAdminFacade {
             productMap.put(chatId, dto);
 
             List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-
-            if (step.equals(ProductEditStepEnum.category)) {
-                var categories = categoryCache.getAll();
-                for (var category : categories) {
-                    var button = new InlineKeyboardButton(category.getName().name());
-                    button.setCallbackData(messageConfig.getCollBackData() + ":" + category.getId());
-                    rows.add(List.of(button));
+            switch (step) {
+                case category -> {
+                    var categories = categoryCache.getAll();
+                    for (var category : categories) {
+                        var button = new InlineKeyboardButton(category.getName().name());
+                        button.setCallbackData(messageConfig.getCollBackData() + ":" + category.getId());
+                        rows.add(List.of(button));
+                    }
                 }
-            } else if (step.equals(ProductEditStepEnum.status)) {
-                var trueButton = new InlineKeyboardButton(EDIT_PRODUCT_STATUS_VISIBLE_TEXT_BUTTON);
-                var falseButton = new InlineKeyboardButton(EDIT_PRODUCT_STATUS_INVISIBLE_TEXT_BUTTON);
-                trueButton.setCallbackData(messageConfig.getCollBackData() + ":true");
-                falseButton.setCallbackData(messageConfig.getCollBackData() + ":false");
-                rows.add(List.of(trueButton));
-                rows.add(List.of(falseButton));
+                case status -> {
+                    var trueButton = new InlineKeyboardButton(EDIT_PRODUCT_STATUS_VISIBLE_TEXT_BUTTON);
+                    var falseButton = new InlineKeyboardButton(EDIT_PRODUCT_STATUS_INVISIBLE_TEXT_BUTTON);
+                    trueButton.setCallbackData(messageConfig.getCollBackData() + ":true");
+                    falseButton.setCallbackData(messageConfig.getCollBackData() + ":false");
+                    rows.add(List.of(trueButton));
+                    rows.add(List.of(falseButton));
+                }
             }
+
             var message = new SendMessage(chatId.toString(), messageConfig.getMessage());
             message.setReplyMarkup(new InlineKeyboardMarkup(rows));
-            return SendMessageEditProductDTO.builder()
+            return SendMessageDTO.builder()
                     .messages(List.of(message))
                     .status(true)
                     .build();
         }
-        return new SendMessageEditProductDTO();
+        return new SendMessageDTO();
     }
 
     public List<SendMessage> showProductEditOptions(Long chatId, Long productId) {
@@ -119,9 +122,9 @@ public class ProductEditAdminFacade {
         return List.of();
     }
 
-    public SendMessageEditProductDTO applyProductEditAndSave(Long chatId, String text) {
+    public SendMessageDTO applyProductEditAndSave(Long chatId, String text) {
         if (!userService.isUserAdminById(chatId)) {
-            return new SendMessageEditProductDTO();
+            return new SendMessageDTO();
         }
 
         var dto = productMap.get(chatId);
@@ -151,28 +154,28 @@ public class ProductEditAdminFacade {
                 try {
                     product.setPrice(Float.parseFloat(text));
                 } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(EDIT_PRODUCT_PRICE_ERROR_TEXT);
+                    throw new IllegalArgumentException(ADMIN_EDIT_PRODUCT_PRICE_ERROR_TEXT);
                 }
             }
             case weight -> {
                 try {
                     product.setWeight(Integer.parseInt(text));
                 } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(EDIT_PRODUCT_WEIGHT_TEXT);
+                    throw new IllegalArgumentException(ADMIN_EDIT_PRODUCT_WEIGHT_TEXT);
                 }
             }
         }
     }
 
-    private SendMessageEditProductDTO successResponse(Long chatId, String text) {
-        return SendMessageEditProductDTO.builder()
+    private SendMessageDTO successResponse(Long chatId, String text) {
+        return SendMessageDTO.builder()
                 .messages(List.of(new SendMessage(chatId.toString(), text)))
                 .status(true)
                 .build();
     }
 
-    private SendMessageEditProductDTO errorResponse(Long chatId, String errorText) {
-        return SendMessageEditProductDTO.builder()
+    private SendMessageDTO errorResponse(Long chatId, String errorText) {
+        return SendMessageDTO.builder()
                 .messages(List.of(new SendMessage(chatId.toString(), errorText)))
                 .status(true)
                 .build();
@@ -185,8 +188,8 @@ public class ProductEditAdminFacade {
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
 
         var editProduct = new InlineKeyboardButton();
-        editProduct.setText(EDIT_PRODUCT_TEXT_BUTTON);
-        editProduct.setCallbackData(EDIT_PRODUCT_COMMAND + ":" + idProduct);
+        editProduct.setText(EDIT_TEXT_BUTTON);
+        editProduct.setCallbackData(ADMIN_EDIT_PRODUCT_CBD + ":" + idProduct);
 
         rowInLine.add(editProduct);
         rowsInLine.add(rowInLine);

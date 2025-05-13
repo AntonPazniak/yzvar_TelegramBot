@@ -1,7 +1,7 @@
 package com.example.yzvar_telegrambot.componets.initializers;
 
 import com.example.yzvar_telegrambot.entities.order.StatusOrder;
-import com.example.yzvar_telegrambot.enums.StatusOrderEnum;
+import com.example.yzvar_telegrambot.enums.OrderStatusEnum;
 import com.example.yzvar_telegrambot.repositories.StatusOrderRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class StatusOrderInitializer {
 
     @PostConstruct
     public void initStatuses() {
-        for (StatusOrderEnum statusOrderEnum : StatusOrderEnum.values()) {
+        for (OrderStatusEnum statusOrderEnum : OrderStatusEnum.values()) {
             statusOrderRepository.findByName(statusOrderEnum).orElseGet(() -> {
                 StatusOrder status = StatusOrder.builder().name(statusOrderEnum).build();
                 return statusOrderRepository.save(status);

@@ -1,5 +1,6 @@
 package com.example.yzvar_telegrambot.configurations;
 
+import com.example.yzvar_telegrambot.enums.OrderEditStepEnum;
 import com.example.yzvar_telegrambot.enums.ProductEditStepEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 @Data
@@ -44,7 +42,8 @@ public class ClientBotConfig {
     public static final String SHOW_PRODUCTS_COMMAND_DESCRIPTION = "Shows products";
     public static final String PRODUCTS_BUTTON_MASSAGE = "Show all products \uD83D\uDCE6";
 
-    public static final String NEW_ORDER_COMMAND = "/new_order";
+    public static final String NEW_ORDER_CBD = "/new_order";
+
     public static final String NEW_ORDER_COMMAND_DESCRIPTION = "Order a product";
 
     public static final String MY_ORDERS_COMMAND = "/my_orders";
@@ -57,7 +56,7 @@ public class ClientBotConfig {
     /**
      * Order commands
      */
-
+    public static final String NEW_ORDER_CANCEL_COMMAND = "/new_order_cancel";
     public static final String ORDER_COMMAND = "/order";
     public static final String ORDER_COMMAND_DESCRIPTION = "Shows menu order";
     public static final String ORDER_BUTTON_MESSAGE = "Get my orders";
@@ -82,108 +81,118 @@ public class ClientBotConfig {
     public static final String ORDER_BUTTON_TEXT = "Order \uD83D\uDCE6";
     public static final String CANCEL_BUTTON_TEXT = "Cancel ❌";
 
+    public static final String EDIT_TEXT_BUTTON = "Edit";
+
+
+    /**
+     * Order Admin
+     */
+
+    public static final String ADMIN_ORDER_GET_PANEL_COMMAND = "/admin_order_get_panel";
+    public static final String ADMIN_ORDER_GET_PANEL_TEXT = "Please select a status order.";
+    public static final String ADMIN_ORDER_GET_STATUS_CBD = "/admin_order_get_status";
+    public static final String ADMIN_ORDER_EDIT_CBD = "/admin_order_edit";
+
+    public static final String ADMIN_ORDER_EDIT_PARAMS_TEXT = "Please select a parameter witch you want to edit.";
+    public static final String ADMIN_ORDER_EDIT_PRICE_CBD = "/admin_order_edit_price";
+    public static final String ADMIN_ORDER_EDIT_STATUS_CBD = "/admin_order_edit_status";
+    public static final String ADMIN_ORDER_EDIT_STATUS_SET_CBD = "/admin_order_edit_status_set";
+
+    public static final String ADMIN_ORDER_EDIT_STATUS_TEXT = "Please select a status order.";
+    public static final String ADMIN_ORDER_EDIT_PRICE_TEXT = "Please enter a new price.";
+    public static final String ADMIN_ORDER_EDIT_PRICE_ERROR_TEXT = "Error: Please enter price as a number, such as 12.99.";
+
+    public static final Map<OrderEditStepEnum, String> editOrderParamMap = Map.ofEntries(
+            Map.entry(OrderEditStepEnum.price, ADMIN_ORDER_EDIT_PRICE_CBD),
+            Map.entry(OrderEditStepEnum.status, ADMIN_ORDER_EDIT_STATUS_CBD)
+    );
+
+    /**
+     * new product
+     */
 
     // new product massage
-    public static final String NEW_PRODUCT_TITLE_TEXT = "New Product \nEnter the title";
-    public static final String NEW_PRODUCT_DESCRIPTION_TEXT = "New Product \nEnter the description";
-    public static final String NEW_PRODUCT_CATEGORY_TEXT = "New Product \nSelect the category";
+    public static final String ADMIN_NEW_PRODUCT_TITLE_TEXT = "New Product \nEnter the title";
+    public static final String ADMIN_NEW_PRODUCT_DESCRIPTION_TEXT = "New Product \nEnter the description";
+    public static final String ADMIN_NEW_PRODUCT_CATEGORY_TEXT = "New Product \nSelect the category";
 
 
-    public static final String NEW_ORDER_CANCEL_COMMAND = "/new_order_cancel";
+    public static final String ADMIN_NEW_PRODUCT_COMMAND = "/new_product";
+    public static final String ADMIN_NEW_PRODUCT_CANCEL_CBD = "/new_product_cancel";
 
-    public static final String NEW_PRODUCT_COMMAND = "/new_product";
-    public static final String NEW_PRODUCT_CANCEL_COMMAND = "/new_product_cancel";
+    public static final String ADMIN_NEW_PRODUCT_CATEGORY_CBD = "/new_product_category";
 
-    public static final String NEW_PRODUCT_CATEGORY_MEAT_COMMAND = "/new_product_category_meat";
-    public static final String NEW_PRODUCT_CATEGORY_MEAT_TEXT_BUTTON = "Meat";
+    public static final String ADMIN_NEW_PRODUCT_PRICE_TEXT = "New Product \nEnter the price";
+    public static final String ADMIN_NEW_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter price as a number, such as 12.99.";
 
-    public static final String NEW_PRODUCT_CATEGORY_VEGETARIAN_COMMAND = "/new_product_category_vegetarian";
-    public static final String NEW_PRODUCT_CATEGORY_VEGETARIAN_TEXT_BUTTON = "Vegetarian";
+    public static final String ADMIN_NEW_PRODUCT_CANCEL_TEXT = "You cancel the crete a new product";
+    public static final String ADMIN_NEW_PRODUCT_WEIGHT_TEXT = "New Product \nEnter the weight of the product";
+    public static final String ADMIN_NEW_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter weight as a number, such as 100.";
+    public static final String ADMIN_NEW_PRODUCT_SUCCESS_TEXT = "New product successfully created";
 
-    public static final String NEW_PRODUCT_PRICE_TEXT = "New Product \nEnter the price";
-    public static final String NEW_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter price as a number, such as 12.99.";
+    /**
+     *  edit product
+     */
 
-    public static final String NEW_PRODUCT_CANCEL_TEXT = "You cancel the crete a new product";
-    public static final String NEW_PRODUCT_WEIGHT_TEXT = "New Product \nEnter the weight of the product";
-    public static final String NEW_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter weight as a number, such as 100.";
-    public static final String NEW_PRODUCT_SUCCESS_TEXT = "New product successfully created";
+    public static final String ADMIN_ALL_PRODUCTS_COMMAND = "/get_all_admin_products";
 
-    public static final String GET_ALL_PRODUCTS_ADMIN_COMMAND = "/get_all_admin_products";
-    public static final String EDIT_PRODUCT_TEXT_BUTTON = "Edit";
-    public static final String EDIT_PRODUCT_COMMAND = "/edit_product";
+    public static final String ADMIN_EDIT_PRODUCT_CBD = "/edit_product";
+    public static final String ADMIN_EDIT_PRODUCT_TITLE_CBD = "/edit_product_title";
+    public static final String ADMIN_EDIT_PRODUCT_DESCRIPTION_CBD = "/edit_product_description";
+    public static final String ADMIN_EDIT_PRODUCT_STATUS_CBD = "/edit_product_status";
+    public static final String ADMIN_EDIT_PRODUCT_PRICE_CBD = "/edit_product_price";
+    public static final String ADMIN_EDIT_PRODUCT_WEIGHT_CBD = "/edit_product_weight";
+    public static final String ADMIN_EDIT_PRODUCT_CATEGORY_CBD = "/edit_product_category";
 
-    public static final String EDIT_PRODUCT_TITLE_COMMAND = "/edit_product_title";
-    public static final String EDIT_PRODUCT_DESCRIPTION_COMMAND = "/edit_product_description";
-    public static final String EDIT_PRODUCT_STATUS_COMMAND = "/edit_product_status";
-    public static final String EDIT_PRODUCT_PRICE_COMMAND = "/edit_product_price";
-    public static final String EDIT_PRODUCT_WEIGHT_COMMAND = "/edit_product_weight";
-    public static final String EDIT_PRODUCT_CATEGORY_COMMAND = "/edit_product_category";
+    public static final String ADMIN_EDIT_PRODUCT_TITLE_TEXT_BUTTON = "Edit title.";
+    public static final String ADMIN_EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON = "Edit description.";
+    public static final String ADMIN_EDIT_PRODUCT_STATUS_TEXT_BUTTON = "Edit status.";
+    public static final String ADMIN_EDIT_PRODUCT_PRICE_TEXT_BUTTON = "Edit price.";
+    public static final String ADMIN_EDIT_PRODUCT_WEIGHT_TEXT_BUTTON = "Edit weight.";
+    public static final String ADMIN_EDIT_PRODUCT_CATEGORY_TEXT_BUTTON = "Edit category.";
 
-    public static final String EDIT_PRODUCT_TITLE_TEXT_BUTTON = "Edit title.";
-    public static final String EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON = "Edit description.";
-    public static final String EDIT_PRODUCT_STATUS_TEXT_BUTTON = "Edit status.";
-    public static final String EDIT_PRODUCT_PRICE_TEXT_BUTTON = "Edit price.";
-    public static final String EDIT_PRODUCT_WEIGHT_TEXT_BUTTON = "Edit weight.";
-    public static final String EDIT_PRODUCT_CATEGORY_TEXT_BUTTON = "Edit category.";
+    public static final String ADMIN_EDIT_PRODUCT_TITLE_TEXT = "Edit product title \nEnter the new title.";
+    public static final String ADMIN_EDIT_PRODUCT_DESCRIPTION_TEXT = "Edit product description \nEnter the new description.";
+    public static final String ADMIN_EDIT_PRODUCT_STATUS_TEXT = "Edit product status \nSelect the new product status.";
+    public static final String ADMIN_EDIT_PRODUCT_PRICE_TEXT = "Edit product price \nEnter the new price.";
+    public static final String ADMIN_EDIT_PRODUCT_WEIGHT_TEXT = "Edit product weight \nEnter the new weight.";
+    public static final String ADMIN_EDIT_PRODUCT_CATEGORY_TEXT = "Edit product category \nSelect the new product category.";
 
-    public static final String EDIT_PRODUCT_TITLE_TEXT = "Edit product title \nEnter the new title.";
-    public static final String EDIT_PRODUCT_DESCRIPTION_TEXT = "Edit product description \nEnter the new description.";
-    public static final String EDIT_PRODUCT_STATUS_TEXT = "Edit product status \nSelect the new product status.";
-    public static final String EDIT_PRODUCT_PRICE_TEXT = "Edit product price \nEnter the new price.";
-    public static final String EDIT_PRODUCT_WEIGHT_TEXT = "Edit product weight \nEnter the new weight.";
-    public static final String EDIT_PRODUCT_CATEGORY_TEXT = "Edit product category \nSelect the new product category.";
+    public static final String ADMIN_EDIT_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter a valid price.";
+    public static final String ADMIN_EDIT_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter a valid weight.";
 
-    public static final String EDIT_PRODUCT_PRICE_ERROR_TEXT = "Error: Please enter a valid price.";
-    public static final String EDIT_PRODUCT_WEIGHT_ERROR_TEXT = "Error: Please enter a valid weight.";
-
-    public static final String EDIT_PRODUCT_CATEGORY_COLL_BACK_DATA = "/edit_product_category_new";
-    public static final String EDIT_PRODUCT_STATUS_COLL_BACK_DATA = "/edit_product_status_new";
+    public static final String ADMIN_EDIT_PRODUCT_CATEGORY_SET_CBD = "/edit_product_category_new";
+    public static final String ADMIN_EDIT_PRODUCT_STATUS_SET_CBD = "/edit_product_status_new";
 
     public static final String EDIT_PRODUCT_STATUS_VISIBLE_TEXT_BUTTON = "Visible";
     public static final String EDIT_PRODUCT_STATUS_INVISIBLE_TEXT_BUTTON = "Invisible";
 
-    public static final List<List<String>> callbackList = List.of(
-            List.of(EDIT_PRODUCT_TITLE_COMMAND, EDIT_PRODUCT_TITLE_TEXT_BUTTON),
-            List.of(EDIT_PRODUCT_DESCRIPTION_COMMAND, EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON),
-            List.of(EDIT_PRODUCT_STATUS_COMMAND, EDIT_PRODUCT_STATUS_TEXT_BUTTON),
-            List.of(EDIT_PRODUCT_PRICE_COMMAND, EDIT_PRODUCT_PRICE_TEXT_BUTTON),
-            List.of(EDIT_PRODUCT_WEIGHT_COMMAND, EDIT_PRODUCT_WEIGHT_TEXT_BUTTON),
-            List.of(EDIT_PRODUCT_CATEGORY_COMMAND, EDIT_PRODUCT_CATEGORY_TEXT_BUTTON)
-    );
-
-    public static final Map<ProductEditStepEnum, String> editProductMessagesByStepMap = Map.ofEntries(
-            Map.entry(ProductEditStepEnum.title, EDIT_PRODUCT_TITLE_COMMAND),
-            Map.entry(ProductEditStepEnum.description, EDIT_PRODUCT_DESCRIPTION_TEXT),
-            Map.entry(ProductEditStepEnum.status, EDIT_PRODUCT_STATUS_COMMAND),
-            Map.entry(ProductEditStepEnum.price, EDIT_PRODUCT_PRICE_COMMAND),
-            Map.entry(ProductEditStepEnum.weight, EDIT_PRODUCT_WEIGHT_COMMAND),
-            Map.entry(ProductEditStepEnum.category, EDIT_PRODUCT_CATEGORY_TEXT)
-    );
-
-    @Data
-    @AllArgsConstructor
-    public static class EditStepMessage {
-        private ProductEditStepEnum productEditStep;
-        private String message;
-        private String collBackData;
-
-        public EditStepMessage(ProductEditStepEnum productEditStep, String message) {
-            this.productEditStep = productEditStep;
-            this.message = message;
-        }
-    }
-
-
-    public static final Map<String, EditStepMessage> editStepMessageMap = Map.ofEntries(
-            Map.entry(EDIT_PRODUCT_TITLE_COMMAND, new EditStepMessage(ProductEditStepEnum.title, EDIT_PRODUCT_TITLE_TEXT)),
-            Map.entry(EDIT_PRODUCT_DESCRIPTION_COMMAND, new EditStepMessage(ProductEditStepEnum.description, EDIT_PRODUCT_DESCRIPTION_TEXT)),
-            Map.entry(EDIT_PRODUCT_STATUS_COMMAND, new EditStepMessage(ProductEditStepEnum.status, EDIT_PRODUCT_STATUS_TEXT, EDIT_PRODUCT_STATUS_COLL_BACK_DATA)),
-            Map.entry(EDIT_PRODUCT_PRICE_COMMAND, new EditStepMessage(ProductEditStepEnum.price, EDIT_PRODUCT_PRICE_TEXT)),
-            Map.entry(EDIT_PRODUCT_WEIGHT_COMMAND, new EditStepMessage(ProductEditStepEnum.weight, EDIT_PRODUCT_WEIGHT_TEXT)),
-            Map.entry(EDIT_PRODUCT_CATEGORY_COMMAND, new EditStepMessage(ProductEditStepEnum.category, EDIT_PRODUCT_CATEGORY_TEXT, EDIT_PRODUCT_CATEGORY_COLL_BACK_DATA))
+    public static final Set<String> editProductCBDSet2 = Set.of(
+            ADMIN_EDIT_PRODUCT_CATEGORY_SET_CBD,
+            ADMIN_EDIT_PRODUCT_STATUS_SET_CBD
     );
 
 
+
+    public static final Set<String> adminCommandSet = Set.of(
+            //order
+            ADMIN_ORDER_GET_PANEL_COMMAND,
+            //product
+            ADMIN_NEW_PRODUCT_COMMAND,
+            ADMIN_ALL_PRODUCTS_COMMAND
+    );
+
+    public static final Set<String> adminCBDSet = Set.of(
+            ADMIN_ORDER_GET_STATUS_CBD,
+            // edit product
+            ADMIN_EDIT_PRODUCT_CBD,
+            ADMIN_EDIT_PRODUCT_TITLE_CBD,
+            ADMIN_EDIT_PRODUCT_DESCRIPTION_CBD,
+            ADMIN_EDIT_PRODUCT_STATUS_CBD,
+            ADMIN_EDIT_PRODUCT_PRICE_CBD,
+            ADMIN_EDIT_PRODUCT_WEIGHT_CBD,
+            ADMIN_EDIT_PRODUCT_CATEGORY_CBD
+    );
 
     public static final KeyboardRow row0 = new KeyboardRow();
     public static final KeyboardRow row1 = new KeyboardRow();
@@ -226,8 +235,64 @@ public class ClientBotConfig {
 
     public static InlineKeyboardButton getCancelButton() {
         var canselButton = new InlineKeyboardButton(CANCEL_BUTTON_TEXT);
-        canselButton.setCallbackData(NEW_PRODUCT_CANCEL_COMMAND);
+        canselButton.setCallbackData(ADMIN_NEW_PRODUCT_CANCEL_CBD);
         return canselButton;
     }
+
+    public static final List<List<String>> callbackList = List.of(
+            List.of(ADMIN_EDIT_PRODUCT_TITLE_CBD, ADMIN_EDIT_PRODUCT_TITLE_TEXT_BUTTON),
+            List.of(ADMIN_EDIT_PRODUCT_DESCRIPTION_CBD, ADMIN_EDIT_PRODUCT_DESCRIPTION_TEXT_BUTTON),
+            List.of(ADMIN_EDIT_PRODUCT_STATUS_CBD, ADMIN_EDIT_PRODUCT_STATUS_TEXT_BUTTON),
+            List.of(ADMIN_EDIT_PRODUCT_PRICE_CBD, ADMIN_EDIT_PRODUCT_PRICE_TEXT_BUTTON),
+            List.of(ADMIN_EDIT_PRODUCT_WEIGHT_CBD, ADMIN_EDIT_PRODUCT_WEIGHT_TEXT_BUTTON),
+            List.of(ADMIN_EDIT_PRODUCT_CATEGORY_CBD, ADMIN_EDIT_PRODUCT_CATEGORY_TEXT_BUTTON)
+    );
+
+    public static final Map<ProductEditStepEnum, String> editProductMessagesByStepMap = Map.ofEntries(
+            Map.entry(ProductEditStepEnum.title, ADMIN_EDIT_PRODUCT_TITLE_CBD),
+            Map.entry(ProductEditStepEnum.description, ADMIN_EDIT_PRODUCT_DESCRIPTION_TEXT),
+            Map.entry(ProductEditStepEnum.status, ADMIN_EDIT_PRODUCT_STATUS_CBD),
+            Map.entry(ProductEditStepEnum.price, ADMIN_EDIT_PRODUCT_PRICE_CBD),
+            Map.entry(ProductEditStepEnum.weight, ADMIN_EDIT_PRODUCT_WEIGHT_CBD),
+            Map.entry(ProductEditStepEnum.category, ADMIN_EDIT_PRODUCT_CATEGORY_TEXT)
+    );
+
+    @Data
+    @AllArgsConstructor
+    public static class EditStepMessage {
+        private ProductEditStepEnum productEditStep;
+        private String message;
+        private String collBackData;
+
+        public EditStepMessage(ProductEditStepEnum productEditStep, String message) {
+            this.productEditStep = productEditStep;
+            this.message = message;
+        }
+    }
+
+
+    public static final Map<String, EditStepMessage> editStepMessageMap = Map.ofEntries(
+            Map.entry(ADMIN_EDIT_PRODUCT_TITLE_CBD, new EditStepMessage(ProductEditStepEnum.title, ADMIN_EDIT_PRODUCT_TITLE_TEXT)),
+            Map.entry(ADMIN_EDIT_PRODUCT_DESCRIPTION_CBD, new EditStepMessage(ProductEditStepEnum.description, ADMIN_EDIT_PRODUCT_DESCRIPTION_TEXT)),
+            Map.entry(ADMIN_EDIT_PRODUCT_STATUS_CBD, new EditStepMessage(ProductEditStepEnum.status, ADMIN_EDIT_PRODUCT_STATUS_TEXT, ADMIN_EDIT_PRODUCT_STATUS_SET_CBD)),
+            Map.entry(ADMIN_EDIT_PRODUCT_PRICE_CBD, new EditStepMessage(ProductEditStepEnum.price, ADMIN_EDIT_PRODUCT_PRICE_TEXT)),
+            Map.entry(ADMIN_EDIT_PRODUCT_WEIGHT_CBD, new EditStepMessage(ProductEditStepEnum.weight, ADMIN_EDIT_PRODUCT_WEIGHT_TEXT)),
+            Map.entry(ADMIN_EDIT_PRODUCT_CATEGORY_CBD, new EditStepMessage(ProductEditStepEnum.category, ADMIN_EDIT_PRODUCT_CATEGORY_TEXT, ADMIN_EDIT_PRODUCT_CATEGORY_SET_CBD))
+    );
+
+    public static final Set<String> editProductCBDSet = Set.of(
+            ADMIN_EDIT_PRODUCT_TITLE_CBD,
+            ADMIN_EDIT_PRODUCT_DESCRIPTION_CBD,
+            ADMIN_EDIT_PRODUCT_PRICE_CBD,
+            ADMIN_EDIT_PRODUCT_STATUS_CBD,
+            ADMIN_EDIT_PRODUCT_CATEGORY_CBD,
+            ADMIN_EDIT_PRODUCT_WEIGHT_CBD
+    );
+    public static final Set<String> editOrderCBDSet = Set.of(
+            ADMIN_ORDER_EDIT_PRICE_CBD,
+            ADMIN_ORDER_EDIT_STATUS_CBD,
+            ADMIN_ORDER_EDIT_STATUS_SET_CBD
+    );
+
 
 }

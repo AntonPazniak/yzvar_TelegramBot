@@ -1,8 +1,8 @@
 package com.example.yzvar_telegrambot.services.facades.admin.product;
 
+import com.example.yzvar_telegrambot.dto.SendMessageDTO;
 import com.example.yzvar_telegrambot.dto.product.ProductDTO;
 import com.example.yzvar_telegrambot.dto.product.ProductNewStepDTO;
-import com.example.yzvar_telegrambot.dto.product.SendMessageNewProductDTO;
 import com.example.yzvar_telegrambot.enums.CategoryEnum;
 import com.example.yzvar_telegrambot.enums.ProductStepEnum;
 import com.example.yzvar_telegrambot.services.product.ProductService;
@@ -32,12 +32,12 @@ public class ProductCreateAdminFacade {
     private final Map<Long, ProductNewStepDTO> editProductMap = new HashMap<>();
 
 
-    public SendMessageNewProductDTO createProduct(Long idUser, String text) {
+    public SendMessageDTO createProduct(Long idUser, String text) {
         if (!newProductMap.containsKey(idUser)) {
             return createProductStart(idUser);
         }
 
-        if (text.equalsIgnoreCase(NEW_PRODUCT_CANCEL_COMMAND)) {
+        if (text.equalsIgnoreCase(ADMIN_NEW_PRODUCT_CANCEL_CBD)) {
             return cancelCreateProduct(idUser);
         }
 
@@ -47,25 +47,25 @@ public class ProductCreateAdminFacade {
         return switch (step) {
             case title -> createProductSetTitle(dto, text);
             case description -> createProductSetDescription(dto, text);
-            case category -> createProductSetCategory(dto, text);
+            case category -> createProductSetCategory(dto, CategoryEnum.valueOf(text));
             case price -> createProductSetPrice(dto, text);
             case weight -> createProductSetWeightAndSave(dto, text);
         };
     }
 
 
-    private SendMessageNewProductDTO cancelCreateProduct(Long idUser) {
+    private SendMessageDTO cancelCreateProduct(Long idUser) {
         newProductMap.remove(idUser);
-        return SendMessageNewProductDTO.builder()
-                .messages(List.of(new SendMessage(idUser.toString(), NEW_PRODUCT_CANCEL_TEXT)))
+        return SendMessageDTO.builder()
+                .messages(List.of(new SendMessage(idUser.toString(), ADMIN_NEW_PRODUCT_CANCEL_TEXT)))
                 .status(false)
                 .build();
     }
 
-    private SendMessageNewProductDTO createProductStart(Long idUser) {
-        var dto = SendMessageNewProductDTO.builder().build();
+    private SendMessageDTO createProductStart(Long idUser) {
+        var dto = SendMessageDTO.builder().build();
         if (userService.isUserAdminById(idUser)) {
-            var message = new SendMessage(idUser.toString(), NEW_PRODUCT_TITLE_TEXT);
+            var message = new SendMessage(idUser.toString(), ADMIN_NEW_PRODUCT_TITLE_TEXT);
             message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
             newProductMap.put(idUser,
                     ProductNewStepDTO.builder()
@@ -83,96 +83,73 @@ public class ProductCreateAdminFacade {
         return dto;
     }
 
-    private SendMessageNewProductDTO createProductSetTitle(ProductNewStepDTO productStepDTO, String title) {
+    private SendMessageDTO createProductSetTitle(ProductNewStepDTO productStepDTO, String title) {
         productStepDTO.getProductDTO().setTitle(title);
         productStepDTO.setProductStep(ProductStepEnum.description);
-        var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_DESCRIPTION_TEXT);
+        var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_DESCRIPTION_TEXT);
         message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
 
-        return SendMessageNewProductDTO.builder()
+        return SendMessageDTO.builder()
                 .status(true)
                 .messages(List.of(message))
                 .build();
     }
 
-    private SendMessageNewProductDTO createProductSetDescription(ProductNewStepDTO productStepDTO, String description) {
+    private SendMessageDTO createProductSetDescription(ProductNewStepDTO productStepDTO, String description) {
         productStepDTO.getProductDTO().setDescription(description);
         productStepDTO.setProductStep(ProductStepEnum.category);
-        var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_CATEGORY_TEXT);
+        var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_CATEGORY_TEXT);
 
-        var meatButton = new InlineKeyboardButton();
-        meatButton.setText(NEW_PRODUCT_CATEGORY_MEAT_TEXT_BUTTON);
-        meatButton.setCallbackData(NEW_PRODUCT_CATEGORY_MEAT_COMMAND);
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        for (CategoryEnum category : CategoryEnum.values()) {
+            var button = new InlineKeyboardButton(category.name());
+            button.setCallbackData(ADMIN_NEW_PRODUCT_CATEGORY_CBD + ":" + category.name());
+            rows.add(List.of(button));
+        }
 
-        var vegetarianButton = new InlineKeyboardButton();
-        vegetarianButton.setText(NEW_PRODUCT_CATEGORY_VEGETARIAN_TEXT_BUTTON);
-        vegetarianButton.setCallbackData(NEW_PRODUCT_CATEGORY_VEGETARIAN_COMMAND);
+        message.setReplyMarkup(new InlineKeyboardMarkup(rows));
 
-        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-        List<InlineKeyboardButton> rowInLine2 = new ArrayList<>();
-
-        rowInLine.add(vegetarianButton);
-        rowInLine.add(meatButton);
-        rowsInLine.add(rowInLine);
-
-        rowInLine2.add(getCancelButton());
-        rowsInLine.add(rowInLine2);
-
-        markupInLine.setKeyboard(rowsInLine);
-        message.setReplyMarkup(markupInLine);
-
-        return SendMessageNewProductDTO.builder()
-                .status(true)
-                .messages(List.of(message))
-                .build();
+        return new SendMessageDTO(true, List.of(message));
     }
 
-    private SendMessageNewProductDTO createProductSetCategory(ProductNewStepDTO productStepDTO, String category) {
-        if (category.equals(NEW_PRODUCT_CATEGORY_MEAT_COMMAND)) {
-            productStepDTO.getProductDTO().setCategory(CategoryEnum.MEAT);
-        } else if (category.equals(NEW_PRODUCT_CATEGORY_VEGETARIAN_COMMAND)) {
-            productStepDTO.getProductDTO().setCategory(CategoryEnum.VEGETARIAN);
+    private SendMessageDTO createProductSetCategory(ProductNewStepDTO productStepDTO, CategoryEnum category) {
+        switch (category) {
+            case MEAT -> productStepDTO.getProductDTO().setCategory(CategoryEnum.MEAT);
+            case VEGETARIAN -> productStepDTO.getProductDTO().setCategory(CategoryEnum.VEGETARIAN);
         }
         productStepDTO.setProductStep(ProductStepEnum.price);
-
-        var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_PRICE_TEXT);
+        var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_PRICE_TEXT);
         message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
-
-        return SendMessageNewProductDTO.builder()
-                .status(true)
-                .messages(List.of(message))
-                .build();
+        return new SendMessageDTO(true, List.of(message));
     }
 
-    private SendMessageNewProductDTO createProductSetPrice(ProductNewStepDTO productStepDTO, String priceString) {
+    private SendMessageDTO createProductSetPrice(ProductNewStepDTO productStepDTO, String priceString) {
         try {
             Float price = Float.parseFloat(priceString);
             productStepDTO.getProductDTO().setPrice(price);
             productStepDTO.setProductStep(ProductStepEnum.weight);
 
-            var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_WEIGHT_TEXT);
+            var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_WEIGHT_TEXT);
             message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
 
-            return SendMessageNewProductDTO.builder()
+            return SendMessageDTO.builder()
                     .status(true)
                     .messages(List.of(message))
                     .build();
 
         } catch (NumberFormatException e) {
 
-            var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_PRICE_ERROR_TEXT);
+            var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_PRICE_ERROR_TEXT);
             message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
 
-            return SendMessageNewProductDTO.builder()
+            return SendMessageDTO.builder()
                     .status(true)
                     .messages(List.of(message))
                     .build();
         }
     }
 
-    private SendMessageNewProductDTO createProductSetWeightAndSave(ProductNewStepDTO productStepDTO, String weightString) {
+    private SendMessageDTO createProductSetWeightAndSave(ProductNewStepDTO productStepDTO, String weightString) {
         try {
             Integer weight = Integer.parseInt(weightString);
             productStepDTO.getProductDTO().setWeight(weight);
@@ -182,20 +159,20 @@ public class ProductCreateAdminFacade {
             newProductMap.remove(productStepDTO.getChatId());
 
 
-            var message1 = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_SUCCESS_TEXT);
+            var message1 = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_SUCCESS_TEXT);
             var message2 = new SendMessage(productStepDTO.getChatId().toString(), dto.toString());
 
-            return SendMessageNewProductDTO.builder()
+            return SendMessageDTO.builder()
                     .status(false)
                     .messages(List.of(message1, message2))
                     .build();
 
         } catch (NumberFormatException e) {
 
-            var message = new SendMessage(productStepDTO.getChatId().toString(), NEW_PRODUCT_WEIGHT_ERROR_TEXT);
+            var message = new SendMessage(productStepDTO.getChatId().toString(), ADMIN_NEW_PRODUCT_WEIGHT_ERROR_TEXT);
             message.setReplyMarkup(getInlineKeyboardMarkupWithCancelButton());
 
-            return SendMessageNewProductDTO.builder()
+            return SendMessageDTO.builder()
                     .status(true)
                     .messages(List.of(message))
                     .build();

@@ -7,9 +7,11 @@ public class OrderMapper {
 
     public static OrderDTO toDTO(Order order) {
         return OrderDTO.builder()
+                .id(order.getId())
                 .orderDate(order.getCreatedDate())
                 .title(order.getProduct().getTitle())
-                .price(order.getProduct().getPrice() * order.getQuantity())
+                .price(order.getPrice())
+                .orderStatus(order.getStatusOrder().getName())
                 .build();
     }
 

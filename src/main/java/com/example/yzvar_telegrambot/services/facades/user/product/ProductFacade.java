@@ -31,7 +31,7 @@ public class ProductFacade {
                     var orderButton = new InlineKeyboardButton();
 
                     orderButton.setText(ClientBotConfig.ORDER_BUTTON_TEXT);
-                    orderButton.setCallbackData(ClientBotConfig.NEW_ORDER_COMMAND + ":" + product.getId());
+                    orderButton.setCallbackData(ClientBotConfig.NEW_ORDER_CBD + ":" + product.getId());
 
                     rowInLine.add(orderButton);
 

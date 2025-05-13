@@ -1,6 +1,6 @@
 package com.example.yzvar_telegrambot.services.facades.user.order;
 
-import com.example.yzvar_telegrambot.dto.order.CreateOrderDTO;
+import com.example.yzvar_telegrambot.dto.order.OrderCreateDTO;
 import com.example.yzvar_telegrambot.services.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,7 @@ public class OrderFacade {
     private final OrderService orderService;
 
     public List<SendMessage> newOrder(Long idUser, Long idProduct) {
-        log.info(idProduct.toString());
-        var order = orderService.createOrder(CreateOrderDTO.builder()
+        var order = orderService.createOrder(OrderCreateDTO.builder()
                 .userId(idUser)
                 .productId(idProduct)
                 .quantity(1)

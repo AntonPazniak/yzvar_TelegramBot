@@ -1,10 +1,10 @@
 package com.example.yzvar_telegrambot.enums;
 
-public enum StatusOrderEnum {
+public enum OrderStatusEnum {
     ACCEPTED,
     DELIVERED,
     REJECTED,
-    IN_PROGRESS,
+    PROCESSING,
     COMPLETED,
     FAILED
 }

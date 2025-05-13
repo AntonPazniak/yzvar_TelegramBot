@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Cacheable(value = "users", key = "#id")
+    //    @Cacheable(value = "users", key = "#id")
     public User getUserByIdOrElseThrow(Long id) {
         return userRepository.findById(id).orElseThrow();
     }
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Cacheable(value = "users", key = "#id")
     public Boolean isUserAdminById(Long id) {
-        var user = userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
         return user.map(
                         value -> value.getRoles()
                                 .contains(roleCacheService.get(UserRoleEnum.ADMIN)))

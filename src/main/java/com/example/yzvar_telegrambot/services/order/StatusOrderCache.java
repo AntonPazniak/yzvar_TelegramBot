@@ -1,7 +1,7 @@
 package com.example.yzvar_telegrambot.services.order;
 
 import com.example.yzvar_telegrambot.entities.order.StatusOrder;
-import com.example.yzvar_telegrambot.enums.StatusOrderEnum;
+import com.example.yzvar_telegrambot.enums.OrderStatusEnum;
 import com.example.yzvar_telegrambot.repositories.StatusOrderRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +17,18 @@ import java.util.Map;
 public class StatusOrderCache {
 
     private final StatusOrderRepository statusOrderRepository;
-    private final Map<StatusOrderEnum, StatusOrder> statusCache = new EnumMap<>(StatusOrderEnum.class);
+    private final Map<OrderStatusEnum, StatusOrder> statusCache = new EnumMap<>(OrderStatusEnum.class);
 
     @PostConstruct
     private void initCache() {
-        for (StatusOrderEnum statusOrderEnum : StatusOrderEnum.values()) {
+        for (OrderStatusEnum statusOrderEnum : OrderStatusEnum.values()) {
             StatusOrder statusOrder = statusOrderRepository.findByName(statusOrderEnum)
                     .orElseThrow(() -> new IllegalStateException("Role not found: " + statusOrderEnum));
             statusCache.put(statusOrderEnum, statusOrder);
         }
     }
 
-    public StatusOrder get(StatusOrderEnum statusOrderEnum) {
+    public StatusOrder get(OrderStatusEnum statusOrderEnum) {
         return statusCache.get(statusOrderEnum);
     }
 }
